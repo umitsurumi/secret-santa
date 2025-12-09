@@ -1,0 +1,54 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ActivityStatus {
+  OPEN      // 报名中
+  MATCHED   // 已抽选，查看Target
+  REVEALED  // 已揭晓，查看Sender
+}
+
+model Activity {
+  id          String   @id @default(cuid()) // 对应 Invite Key
+  adminKey    String   @unique @default(cuid()) // 管理 Key
+  name        String
+  description String?
+  status      ActivityStatus @default(OPEN)
+  deadline    DateTime
+  createdAt   DateTime @default(now())
+
+  participants Participant[]
+}
+
+model Participant {
+  id           String   @id @default(cuid()) // 对应 Participant Key
+  activityId   String
+  nickname     String   // 昵称
+
+  // --- 敏感信息 (存入数据库前需应用层加密) ---
+  realName     String   // 真实姓名 (加密)
+  socialAccount String  // 社交账号 (可不加密，便于房主确认身份)
+  phone        String   // 手机号 (加密)
+  address      String   // 地址 (加密)
+  // ---------------------------------------
+
+  wishes       String   // 给Target的祝福
+  thanks       String?  // 给Sender的感谢(可选)
+
+  // 关系映射
+  targetId     String?  @unique // 我要送给谁 (Self-relation ID)
+  target       Participant? @relation("GiftCircle", fields: [targetId], references: [id])
+
+  sender       Participant? @relation("GiftCircle") // 谁送给我
+
+  activity     Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@unique([activityId, nickname]) // 保证同房间内昵称唯一
+}
