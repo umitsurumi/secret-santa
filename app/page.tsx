@@ -63,6 +63,14 @@ export default function Home() {
                         输入邀请码加入
                     </Link>
 
+                    <Link
+                        href="/reveal"
+                        className="w-full glass-panel bg-white/5 hover:bg-white/10 text-white/80 font-medium py-4 rounded-xl border border-white/5 transition-all flex items-center justify-center gap-2 text-sm"
+                    >
+                        <Stamp className="w-4 h-4 text-white/50" />
+                        查看抽选结果
+                    </Link>
+
                     <p className="text-center text-white/40 text-xs mt-4">
                         无需注册 · 隐私加密 · 阅后即焚
                     </p>
