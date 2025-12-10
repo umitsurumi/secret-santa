@@ -85,13 +85,13 @@ export default function RevealResultPage() {
     if (error) {
         return (
             <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
-                <div className="text-red-400 mb-4 text-lg">Error</div>
+                <div className="text-red-400 mb-4 text-lg">错误</div>
                 <p className="text-white/60 mb-6">{error}</p>
                 <button
                     onClick={() => router.push("/reveal")}
                     className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-full transition-colors"
                 >
-                    Return to Login
+                    返回登录
                 </button>
             </div>
         );
@@ -110,7 +110,7 @@ export default function RevealResultPage() {
                         <span className="text-4xl">⏳</span>
                     </div>
                     <h2 className="text-2xl font-serif font-bold text-white mb-2">
-                        Waiting for Santa
+                        等待圣诞老人
                     </h2>
                     <p className="text-white/70 text-sm mb-6">
                         活动 "{activity.name}" 正在报名中。
@@ -119,9 +119,9 @@ export default function RevealResultPage() {
                     </p>
                     <div className="bg-black/20 p-4 rounded-lg">
                         <p className="text-xs text-white/40 uppercase tracking-widest mb-1">
-                            Your Status
+                            你的状态
                         </p>
-                        <p className="text-white font-medium">Ready to Gift</p>
+                        <p className="text-white font-medium">准备送礼</p>
                     </div>
                 </div>
             </div>
@@ -138,12 +138,10 @@ export default function RevealResultPage() {
 
                 <div className="relative z-10 w-full max-w-md flex flex-col items-center">
                     <h2 className="text-white font-serif text-3xl mb-2 text-center drop-shadow-lg">
-                        The Match
-                        <br />
-                        Is Ready
+                        匹配已就绪
                     </h2>
                     <p className="text-white/60 text-sm text-center mb-10 font-serif italic">
-                        Your target has been selected.
+                        你的送礼对象已选定。
                     </p>
 
                     {/* Envelope Interaction */}
@@ -177,14 +175,14 @@ export default function RevealResultPage() {
                             </div>
 
                             <div className="absolute bottom-6 text-[#8E001C] font-serif text-sm tracking-widest uppercase opacity-60 font-bold">
-                                Tap to Open
+                                点击打开
                             </div>
                         </div>
                     </div>
 
                     <div className="mt-12 text-center space-y-2">
                         <p className="text-white/30 text-xs uppercase tracking-wider">
-                            Activity Status: {activity.status}
+                            活动状态: {activity.status}
                         </p>
                         <div className="w-1 h-8 bg-gradient-to-b from-white/20 to-transparent mx-auto"></div>
                     </div>
@@ -201,7 +199,7 @@ export default function RevealResultPage() {
 
     return (
         <div className="min-h-screen bg-[#0F172A] flex justify-center p-0 md:p-8">
-            <div className="w-full max-w-md bg-[#1C1C1E] md:rounded-[40px] md:border-[12px] md:border-[#020617] md:shadow-2xl overflow-hidden flex flex-col h-[100dvh] md:h-[812px] relative">
+            <div className="w-full max-w-md bg-[#1C1C1E] overflow-hidden flex flex-col h-[100dvh] md:min-h-screen relative">
                 {/* Header / Avatar Area */}
                 <div className="h-1/3 w-full bg-[#8E001C] relative shrink-0">
                     <div className="absolute inset-0 overflow-hidden">
@@ -230,7 +228,7 @@ export default function RevealResultPage() {
                         <div className="flex justify-between items-start mb-6">
                             <div>
                                 <p className="text-white/40 text-xs uppercase tracking-wider mb-1">
-                                    You are the Santa for
+                                    你是以下参与者的圣诞老人
                                 </p>
                                 <h2 className="text-white font-serif text-3xl font-bold">
                                     {target?.nickname || "Unknown"}
@@ -269,11 +267,11 @@ export default function RevealResultPage() {
                                         </div>
                                         <div>
                                             <div className="text-[10px] text-white/40 uppercase mb-1">
-                                                Shipping Address
+                                                收货地址
                                             </div>
                                             <div className="text-white/80 text-sm leading-relaxed select-text">
                                                 {target?.address ||
-                                                    "Wait for reveal..."}
+                                                    "等待揭晓..."}
                                             </div>
                                             <div className="text-[10px] text-white/40 mt-1">
                                                 * 真实姓名: {target?.realName}
@@ -289,11 +287,10 @@ export default function RevealResultPage() {
                                         </div>
                                         <div>
                                             <div className="text-[10px] text-white/40 uppercase mb-1">
-                                                Phone Number
+                                                手机号码
                                             </div>
                                             <div className="text-white/80 text-sm font-mono tracking-wider select-text">
-                                                {target?.phone ||
-                                                    "Wait for reveal..."}
+                                                {target?.phone || "等待揭晓..."}
                                             </div>
                                         </div>
                                     </div>
@@ -307,7 +304,7 @@ export default function RevealResultPage() {
                         <div className="mt-10 pt-10 border-t border-white/10">
                             <div className="flex justify-center mb-6">
                                 <span className="px-3 py-1 bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40 rounded-full text-[10px] font-bold tracking-widest uppercase animate-pulse">
-                                    Secret Santa Revealed
+                                    Secret Santa 已揭晓
                                 </span>
                             </div>
 
@@ -324,7 +321,7 @@ export default function RevealResultPage() {
                                 <div className="bg-[#f1f5f9] rounded-lg shadow-2xl p-6 text-slate-800 relative rotate-1 group-hover:rotate-0 transition-transform duration-500">
                                     <div className="text-center border-b-2 border-dashed border-slate-300 pb-4 mb-4">
                                         <p className="font-serif text-red-700 font-bold text-lg">
-                                            From Your Santa
+                                            来自你的圣诞老人
                                         </p>
                                     </div>
 
@@ -350,7 +347,7 @@ export default function RevealResultPage() {
                                         <p className="text-sm font-serif italic text-slate-600 whitespace-pre-wrap">
                                             {sender.wishes
                                                 ? `"${sender.wishes}"`
-                                                : "Merry Christmas!"}
+                                                : "圣诞快乐！"}
                                         </p>
                                     </div>
                                 </div>

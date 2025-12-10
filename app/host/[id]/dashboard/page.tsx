@@ -287,7 +287,7 @@ export default function HostDashboard() {
                 <div className="glass-panel p-8 rounded-2xl max-w-md w-full text-center">
                     <ShieldAlert className="w-16 h-16 text-red-500 mx-auto mb-4" />
                     <h2 className="text-white text-xl font-bold mb-2">
-                        Admin Access Required
+                        需要管理员权限
                     </h2>
                     <p className="text-white/50 text-sm mb-6">
                         请输入 Admin Key 以管理活动
@@ -316,9 +316,7 @@ export default function HostDashboard() {
         return (
             <main className="min-h-screen bg-gray-900 flex items-center justify-center p-6">
                 <div className="text-white text-center">
-                    <h2 className="text-xl font-bold mb-2">
-                        Error Loading Dashboard
-                    </h2>
+                    <h2 className="text-xl font-bold mb-2">加载仪表板时出错</h2>
                     <p className="text-red-400">
                         {error || "Activity not found"}
                     </p>
@@ -326,7 +324,7 @@ export default function HostDashboard() {
                         onClick={() => window.location.reload()}
                         className="mt-4 underline text-white/50"
                     >
-                        Retry
+                        重试
                     </button>
                 </div>
             </main>
@@ -338,7 +336,7 @@ export default function HostDashboard() {
 
     return (
         <main className="min-h-screen bg-[#0F172A] flex items-center justify-center p-4 sm:p-6 font-sans">
-            <div className="w-full max-w-md h-[85vh] sm:h-[800px] bg-[#0F172A] sm:border-[12px] sm:border-[#020617] sm:rounded-[40px] sm:shadow-2xl flex flex-col relative overflow-hidden ring-1 ring-white/10">
+            <div className="w-full max-w-md min-h-[85vh] bg-[#0F172A] flex flex-col relative overflow-hidden ring-1 ring-white/10">
                 {/* Header */}
                 <div className="px-6 pt-8 pb-4 border-b border-white/10 bg-[#1E293B]/50 backdrop-blur z-20">
                     <div className="flex justify-between items-center mb-2">
@@ -346,7 +344,7 @@ export default function HostDashboard() {
                             href="/"
                             className="text-white/50 hover:text-white flex items-center gap-1 text-xs"
                         >
-                            ← Exit
+                            ← 退出
                         </Link>
                         <span
                             className={`px-2 py-0.5 rounded text-[10px] border ${
@@ -364,7 +362,7 @@ export default function HostDashboard() {
                         {activity.name}
                     </h2>
                     <p className="text-white/40 text-xs mt-1">
-                        Deadline:{" "}
+                        截止时间:{" "}
                         {format(new Date(activity.deadline), "MM/dd HH:mm")}
                     </p>
                 </div>
@@ -379,7 +377,7 @@ export default function HostDashboard() {
                                 : "text-white/40 hover:text-white"
                         }`}
                     >
-                        Participants ({activity.participants.length})
+                        参与者 ({activity.participants.length})
                     </button>
                     <button
                         onClick={() => setActiveTab("results")}
@@ -390,7 +388,7 @@ export default function HostDashboard() {
                                 : "text-white/40 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
                         }`}
                     >
-                        Results
+                        结果
                     </button>
                 </div>
 
@@ -404,7 +402,7 @@ export default function HostDashboard() {
                                     <div className="flex justify-between items-start mb-2">
                                         <div className="flex-1 min-w-0">
                                             <p className="text-white/40 text-[10px] uppercase tracking-wider">
-                                                Public Invite Code
+                                                公开邀请码
                                             </p>
                                             <div className="flex items-center gap-2">
                                                 <code className="text-xl font-mono text-white font-bold tracking-widest truncate block max-w-[200px]">
@@ -433,8 +431,7 @@ export default function HostDashboard() {
                                         </button>
                                     </div>
                                     <p className="text-[10px] text-white/30">
-                                        Share this code with your friends to
-                                        join.
+                                        分享此邀请码给你的朋友加入活动。
                                     </p>
                                 </div>
                             )}
@@ -444,7 +441,7 @@ export default function HostDashboard() {
                                 <div className="text-center py-10">
                                     <Ghost className="w-8 h-8 text-white/20 mx-auto mb-2" />
                                     <p className="text-white/30 text-xs">
-                                        Waiting for players...
+                                        等待玩家加入...
                                     </p>
                                 </div>
                             ) : (
@@ -521,18 +518,16 @@ export default function HostDashboard() {
                                                             navigator.clipboard.writeText(
                                                                 p.id
                                                             );
-                                                            alert("Key Copied");
+                                                            alert("密钥已复制");
                                                         }}
                                                         className="text-white/60 hover:text-white px-2 py-1 bg-white/5 rounded text-[10px]"
                                                     >
-                                                        Copy
+                                                        复制
                                                     </button>
                                                 </div>
                                                 <p className="text-[10px] text-white/30 mt-2 flex items-center gap-1">
                                                     <Shield className="w-3 h-3" />
-                                                    Use only for rescue
-                                                    operations. Verify identity
-                                                    first.
+                                                    仅用于救援操作。请先验证身份。
                                                 </p>
                                             </div>
                                         )}
@@ -556,7 +551,7 @@ export default function HostDashboard() {
                                     className="flex items-center gap-2 cursor-pointer group select-none"
                                 >
                                     <span className="text-[10px] text-white/60 group-hover:text-gold uppercase tracking-wider">
-                                        Spoiler Hide
+                                        防剧透模式
                                     </span>
                                     <div
                                         className={`w-8 h-4 rounded-full relative transition-colors ${
@@ -593,9 +588,7 @@ export default function HostDashboard() {
                             <div className="bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg mb-4 flex gap-2 items-start">
                                 <EyeOff className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
                                 <p className="text-[10px] text-blue-200">
-                                    Results are hidden by default to prevent
-                                    accidental spoilers for the host. Click to
-                                    reveal specific matches.
+                                    默认隐藏结果以防止房主意外剧透。点击可查看具体匹配。
                                 </p>
                             </div>
 
@@ -682,7 +675,7 @@ export default function HostDashboard() {
                             ) : (
                                 <Shuffle className="w-4 h-4" />
                             )}
-                            Start Matching
+                            开始抽选
                         </button>
                     ) : activity.status === "MATCHED" ? (
                         <button
@@ -695,17 +688,17 @@ export default function HostDashboard() {
                             ) : (
                                 <Unlock className="w-4 h-4" />
                             )}
-                            公开送礼人 (Reveal Senders)
+                            公开送礼人
                         </button>
                     ) : (
                         <div className="text-center">
                             <p className="text-green-400 text-xs font-bold flex items-center justify-center gap-2">
                                 <CheckCircle2 className="w-4 h-4" />
-                                Event Fully Revealed
+                                活动已完全揭晓
                             </p>
                             <p className="text-white/30 text-[10px] mt-1">
-                                All participants can now see who their Secret
-                                Santa is.
+                                所有参与者现在都可以看到他们的 Secret Santa
+                                是谁。
                             </p>
                         </div>
                     )}

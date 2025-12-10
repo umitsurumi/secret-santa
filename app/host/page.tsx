@@ -64,7 +64,7 @@ export default function HostEnterPage() {
                 {/* 卡片 */}
                 <div className="glass-panel p-6 rounded-3xl w-full flex-1 flex flex-col">
                     <h3 className="text-white/60 text-sm font-medium mb-6 uppercase tracking-wider">
-                        Enter Admin Key
+                        输入管理员密钥
                     </h3>
 
                     <form
@@ -74,7 +74,7 @@ export default function HostEnterPage() {
                         <div className="space-y-2">
                             <label className="text-white text-sm ml-1 flex items-center gap-2">
                                 <Key className="w-4 h-4 text-christmas-gold" />
-                                Admin Key
+                                管理员密钥
                             </label>
                             <input
                                 type="text"

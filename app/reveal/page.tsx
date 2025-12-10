@@ -39,7 +39,7 @@ export default function RevealEntryPage() {
                 <div className="glass-panel p-8 rounded-2xl shadow-2xl border-t border-white/20">
                     <div className="text-center mb-8">
                         <h1 className="font-serif text-3xl text-white font-bold mb-2">
-                            Reveal Your Match
+                            查看你的匹配结果
                         </h1>
                         <p className="text-white/60 text-sm">
                             输入您的参与者密钥 (Participant Key) 查看结果
@@ -52,7 +52,7 @@ export default function RevealEntryPage() {
                                 htmlFor="key"
                                 className="block text-xs font-medium text-white/80 uppercase tracking-wider mb-2"
                             >
-                                Participant Key
+                                参与者密钥
                             </label>
                             <div className="relative">
                                 <input
@@ -79,7 +79,7 @@ export default function RevealEntryPage() {
                                     }}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-christmas-gold hover:text-white transition-colors"
                                 >
-                                    PASTE
+                                    粘贴
                                 </button>
                             </div>
                         </div>
