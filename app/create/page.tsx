@@ -11,12 +11,21 @@ import {
     Key,
     AlertOctagon,
     Loader2,
+    Copy,
+    Check,
+    Share2,
 } from "lucide-react";
 
 export default function CreateEvent() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState("");
+    const [createdActivity, setCreatedActivity] = useState<{
+        activityId: string;
+        adminKey: string;
+        name: string;
+        deadline: string;
+    } | null>(null);
 
     const [formData, setFormData] = useState({
         name: "2023 设计部圣诞派对",
@@ -50,18 +59,8 @@ export default function CreateEvent() {
                 throw new Error(data.error || "创建活动失败");
             }
 
-            // 跳转到房主 Dashboard 并携带 Admin Key
-            // 这里我们使用 URL search params 传递 key，
-            // 实际上在生产环境中可能需要更安全的方式，或者在跳转后立即让用户保存
-            const searchParams = new URLSearchParams({
-                adminKey: data.data.adminKey,
-                new: "true",
-            });
-            router.push(
-                `/host/${
-                    data.data.activityId
-                }/dashboard?${searchParams.toString()}`
-            );
+            // 保存创建的活动数据，显示成功面板
+            setCreatedActivity(data.data);
         } catch (err: any) {
             console.error("Failed to create activity:", err);
             setError(err.message || "创建活动失败，请稍后重试");
@@ -70,6 +69,155 @@ export default function CreateEvent() {
         }
     };
 
+    const handleCopy = (text: string, type: string) => {
+        navigator.clipboard.writeText(text);
+        alert(`${type} 已复制到剪贴板`);
+    };
+
+    const handleGoToDashboard = () => {
+        if (!createdActivity) return;
+        const searchParams = new URLSearchParams({
+            adminKey: createdActivity.adminKey,
+            new: "true",
+        });
+        router.push(
+            `/host/${
+                createdActivity.activityId
+            }/dashboard?${searchParams.toString()}`
+        );
+    };
+
+    // 成功面板
+    if (createdActivity) {
+        return (
+            <main className="min-h-screen bg-festive-gradient flex items-center justify-center p-6">
+                <div className="w-full max-w-md h-full min-h-[600px] flex flex-col">
+                    {/* Nav */}
+                    <div className="flex items-center gap-4 mb-8">
+                        <Link
+                            href="/"
+                            className="p-2 rounded-full glass-panel hover:bg-white/10 transition-colors"
+                        >
+                            <ChevronLeft className="w-5 h-5 text-white" />
+                        </Link>
+                        <span className="text-white font-serif text-xl tracking-wide">
+                            创建成功
+                        </span>
+                    </div>
+
+                    {/* Success Card */}
+                    <div className="glass-panel p-6 rounded-3xl w-full flex-1 flex flex-col">
+                        <h3 className="text-white/60 text-sm font-medium mb-6 uppercase tracking-wider">
+                            Activity Created
+                        </h3>
+
+                        <div className="space-y-6 flex-1">
+                            {/* Activity Info */}
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                                <h4 className="text-white font-bold text-lg mb-2">
+                                    {createdActivity.name}
+                                </h4>
+                                <p className="text-white/60 text-sm">
+                                    截止时间:{" "}
+                                    {new Date(
+                                        createdActivity.deadline
+                                    ).toLocaleString("zh-CN")}
+                                </p>
+                            </div>
+
+                            {/* Keys */}
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="text-white/70 text-sm mb-2 block">
+                                        <span className="flex items-center gap-2">
+                                            <Key className="w-4 h-4 text-christmas-gold" />
+                                            邀请码 (Invite Key)
+                                        </span>
+                                    </label>
+                                    <div className="flex items-center gap-2">
+                                        <code className="flex-1 glass-input p-3 rounded-lg text-white font-mono text-sm truncate">
+                                            {createdActivity.activityId}
+                                        </code>
+                                        <button
+                                            onClick={() =>
+                                                handleCopy(
+                                                    createdActivity.activityId,
+                                                    "邀请码"
+                                                )
+                                            }
+                                            className="p-3 glass-panel hover:bg-white/10 rounded-lg transition-colors"
+                                        >
+                                            <Copy className="w-4 h-4 text-white" />
+                                        </button>
+                                    </div>
+                                    <p className="text-white/40 text-xs mt-2">
+                                        将此码分享给参与者，让他们加入活动。
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label className="text-white/70 text-sm mb-2 block">
+                                        <span className="flex items-center gap-2">
+                                            <Key className="w-4 h-4 text-red-400" />
+                                            管理密钥 (Admin Key)
+                                        </span>
+                                    </label>
+                                    <div className="flex items-center gap-2">
+                                        <code className="flex-1 glass-input p-3 rounded-lg text-white font-mono text-sm truncate">
+                                            {createdActivity.adminKey}
+                                        </code>
+                                        <button
+                                            onClick={() =>
+                                                handleCopy(
+                                                    createdActivity.adminKey,
+                                                    "管理密钥"
+                                                )
+                                            }
+                                            className="p-3 glass-panel hover:bg-white/10 rounded-lg transition-colors"
+                                        >
+                                            <Copy className="w-4 h-4 text-white" />
+                                        </button>
+                                    </div>
+                                    <p className="text-red-300/70 text-xs mt-2 flex items-center gap-1">
+                                        <AlertOctagon className="w-3 h-3" />
+                                        请务必保存此密钥！这是您管理活动的唯一凭证，丢失无法找回。
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Warning */}
+                            <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-4">
+                                <p className="text-red-200 text-sm leading-relaxed">
+                                    <strong>重要提示：</strong>
+                                    系统不会存储您的 Admin
+                                    Key，请立即截图或复制保存。关闭此页面后将无法再次查看。
+                                </p>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="mt-auto pt-6 border-t border-white/10 space-y-3">
+                                <button
+                                    onClick={handleGoToDashboard}
+                                    className="w-full bg-gradient-to-r from-christmas-gold to-yellow-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                                >
+                                    进入管理后台
+                                    <Share2 className="w-4 h-4" />
+                                </button>
+                                <Link
+                                    href="/"
+                                    className="w-full glass-panel bg-white/5 hover:bg-white/10 text-white py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors"
+                                >
+                                    返回首页
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        );
+    }
+
+    // 原始表单
     return (
         <main className="min-h-screen bg-festive-gradient flex items-center justify-center p-6">
             <div className="w-full max-w-md h-full min-h-[600px] flex flex-col">

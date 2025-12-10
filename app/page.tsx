@@ -1,4 +1,4 @@
-import { Gift, PlusCircle, Ticket, Stamp } from "lucide-react";
+import { Gift, PlusCircle, Ticket, Stamp, Key } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -69,6 +69,14 @@ export default function Home() {
                     >
                         <Stamp className="w-4 h-4 text-white/50" />
                         查看抽选结果
+                    </Link>
+
+                    <Link
+                        href="/host"
+                        className="w-full glass-panel bg-white/5 hover:bg-white/10 text-white/80 font-medium py-4 rounded-xl border border-white/5 transition-all flex items-center justify-center gap-2 text-sm"
+                    >
+                        <Key className="w-4 h-4 text-white/50" />
+                        房主管理入口
                     </Link>
 
                     <p className="text-center text-white/40 text-xs mt-4">

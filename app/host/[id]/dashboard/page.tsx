@@ -28,6 +28,8 @@ type Participant = {
     id: string;
     nickname: string;
     socialAccount: string;
+    targetId?: string | null;
+    target?: Participant | null;
 };
 
 type Activity = {
@@ -400,17 +402,32 @@ export default function HostDashboard() {
                             {activity.status === "OPEN" && (
                                 <div className="bg-[#1E293B] p-4 rounded-xl border border-dashed border-white/20 mb-4">
                                     <div className="flex justify-between items-start mb-2">
-                                        <div>
+                                        <div className="flex-1 min-w-0">
                                             <p className="text-white/40 text-[10px] uppercase tracking-wider">
                                                 Public Invite Code
                                             </p>
-                                            <p className="text-2xl font-mono text-white font-bold tracking-widest">
-                                                {activity.id}
-                                            </p>
+                                            <div className="flex items-center gap-2">
+                                                <code className="text-xl font-mono text-white font-bold tracking-widest truncate block max-w-[200px]">
+                                                    {activity.id}
+                                                </code>
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                            activity.id
+                                                        );
+                                                        alert("邀请码已复制");
+                                                    }}
+                                                    className="p-1 bg-white/5 hover:bg-white/10 rounded text-white/70 shrink-0"
+                                                    title="复制邀请码"
+                                                >
+                                                    <Copy className="w-3 h-3" />
+                                                </button>
+                                            </div>
                                         </div>
                                         <button
                                             onClick={handleCopyInviteLink}
                                             className="p-2 bg-white/5 hover:bg-white/10 rounded-lg text-white/70"
+                                            title="复制邀请链接"
                                         >
                                             <Share2 className="w-4 h-4" />
                                         </button>
@@ -588,9 +605,7 @@ export default function HostDashboard() {
                             {/* Let's render assuming we might need to fetch a special endpoint or the main one gets updated */}
 
                             <div className="space-y-2">
-                                {activity.participants.map((p: any) => {
-                                    // Hack: If target is not in data, we can't show it.
-                                    // For now, let's just show the structure.
+                                {activity.participants.map((p) => {
                                     const targetName =
                                         p.target?.nickname || "???";
 
@@ -632,7 +647,6 @@ export default function HostDashboard() {
                                                             : ""
                                                     }`}
                                                 >
-                                                    {/* If we don't have target data, it will show ???. Requires API update */}
                                                     {targetName}
                                                 </div>
 

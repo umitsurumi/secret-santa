@@ -74,6 +74,14 @@ export async function GET(request: NextRequest) {
                         id: true,
                         nickname: true,
                         socialAccount: true,
+                        targetId: true,
+                        target: {
+                            select: {
+                                id: true,
+                                nickname: true,
+                                socialAccount: true,
+                            },
+                        },
                     },
                     orderBy: { id: "desc" },
                 },
