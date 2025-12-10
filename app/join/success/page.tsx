@@ -20,10 +20,10 @@ function TicketContent() {
     };
 
     return (
-        <div className="w-[375px] h-[812px] bg-transparent border-[12px] border-[#1a1a1a] rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col shrink-0 bg-[#0F281E]">
+        <div className="max-w-md w-full mx-auto bg-christmas-glass/30 backdrop-blur-lg rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative">
             <div className="flex-1 flex flex-col items-center pt-8 px-6 relative z-10 overflow-y-auto no-scrollbar">
                 <h2 className="text-white font-serif text-2xl mb-2 text-center">
-                    You're In!
+                    报名成功！
                 </h2>
                 <p className="text-white/60 text-xs text-center mb-6 max-w-[200px]">
                     请务必保存下方票根，它是你领取礼物和查看结果的唯一凭证。
@@ -35,7 +35,7 @@ function TicketContent() {
                     <div className="bg-christmas-red p-4 flex justify-between items-center relative overflow-hidden">
                         <div className="absolute w-full h-full top-0 left-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
                         <span className="text-white/80 font-mono text-xs z-10">
-                            TICKET NO.{" "}
+                            票根编号{" "}
                             {Math.floor(Math.random() * 1000)
                                 .toString()
                                 .padStart(3, "0")}
@@ -76,7 +76,7 @@ function TicketContent() {
                         {/* User Key */}
                         <div className="bg-slate-100 p-3 rounded border border-slate-200">
                             <p className="text-[10px] text-slate-400 uppercase mb-1">
-                                Your Participant Key
+                                你的参与密钥
                             </p>
                             <div className="flex justify-between items-center gap-2">
                                 <code className="text-sm font-mono font-bold text-christmas-red tracking-wider truncate flex-1 block">
@@ -105,7 +105,7 @@ function TicketContent() {
                         <div className="flex justify-between items-end">
                             <div>
                                 <div className="text-[10px] text-slate-400 uppercase">
-                                    Nickname
+                                    昵称
                                 </div>
                                 <div className="font-bold text-sm truncate max-w-[100px]">
                                     {nickname}
@@ -113,10 +113,10 @@ function TicketContent() {
                             </div>
                             <div>
                                 <div className="text-[10px] text-slate-400 uppercase text-right">
-                                    Status
+                                    状态
                                 </div>
                                 <div className="font-bold text-sm text-right text-green-600 flex items-center justify-end gap-1">
-                                    Waiting{" "}
+                                    等待中{" "}
                                     <span className="block w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
                                 </div>
                             </div>

@@ -48,15 +48,15 @@ export default function JoinPage() {
 
     return (
         <div className="min-h-screen bg-christmas-dark flex items-center justify-center p-8 bg-[radial-gradient(circle_at_50%_10%,#1a4d33_0%,#051610_100%)]">
-            <div className="w-[375px] h-[812px] bg-transparent border-[12px] border-[#1a1a1a] rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col shrink-0">
+            <div className="max-w-md w-full mx-auto bg-christmas-glass/30 backdrop-blur-lg rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative">
                 {/* Decorative Snow */}
                 <div className="absolute top-10 left-10 w-2 h-2 bg-white/20 rounded-full blur-[1px]"></div>
                 <div className="absolute top-20 right-20 w-3 h-3 bg-white/10 rounded-full blur-[2px]"></div>
 
-                <div className="flex-1 flex flex-col justify-center px-6 relative z-10">
+                <div className="p-8 relative z-10">
                     <Link
                         href="/"
-                        className="absolute top-12 left-6 text-white/60 hover:text-white transition-colors"
+                        className="absolute top-6 left-6 text-white/60 hover:text-white transition-colors"
                     >
                         <ArrowLeft className="w-6 h-6" />
                     </Link>
@@ -68,7 +68,7 @@ export default function JoinPage() {
 
                         <div>
                             <h2 className="text-2xl text-white font-serif font-bold mb-2">
-                                Have an Invite?
+                                已有邀请码？
                             </h2>
                             <p className="text-white/50 text-sm">
                                 请输入房间邀请码加入活动

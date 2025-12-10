@@ -85,13 +85,13 @@ export default function RegistrationPage({
 
     return (
         <div className="min-h-screen bg-christmas-dark flex items-center justify-center p-8 bg-[radial-gradient(circle_at_50%_10%,#1a4d33_0%,#051610_100%)]">
-            <div className="w-[375px] h-[812px] bg-transparent border-[12px] border-[#1a1a1a] rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col shrink-0 bg-[#0F281E]">
-                <div className="flex-1 flex flex-col relative z-10 overflow-y-auto no-scrollbar pb-24">
+            <div className="max-w-md w-full mx-auto bg-christmas-glass/30 backdrop-blur-lg rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative">
+                <div className="flex-1 flex flex-col relative z-10 overflow-y-auto no-scrollbar pb-6">
                     {/* Sticky Header */}
                     <div className="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-[#0d2119]/80 backdrop-blur-md sticky top-0 z-50">
                         <div>
                             <h3 className="text-white font-serif text-lg">
-                                Fill Details
+                                填写详细信息
                             </h3>
                             <p className="text-xs text-white/40">
                                 参加 Secret Santa
@@ -214,8 +214,8 @@ export default function RegistrationPage({
                     </div>
                 </div>
 
-                {/* Footer Action (Absolute) */}
-                <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/90 to-transparent z-50">
+                {/* Footer Action */}
+                <div className="w-full p-6 bg-gradient-to-t from-black/90 to-transparent">
                     <button
                         onClick={handleSubmit}
                         disabled={isSubmitting}
