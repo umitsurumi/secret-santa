@@ -197,7 +197,7 @@ export default function RegistrationPage({
                                     value={formData.realName}
                                     onChange={handleChange}
                                     type="text"
-                                    placeholder="真实姓名"
+                                    placeholder="收件人"
                                     className="w-full glass-input p-3 rounded-lg text-sm bg-black/40"
                                 />
                                 <input
@@ -205,7 +205,7 @@ export default function RegistrationPage({
                                     value={formData.phone}
                                     onChange={handleChange}
                                     type="tel"
-                                    placeholder="手机号码"
+                                    placeholder="手机号"
                                     className="w-full glass-input p-3 rounded-lg text-sm bg-black/40"
                                 />
                                 <textarea

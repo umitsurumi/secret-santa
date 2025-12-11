@@ -235,7 +235,7 @@ export default function RevealResultPage() {
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-white/60 mb-1">
-                                    真实姓名
+                                    收件人
                                 </label>
                                 <input
                                     value={editForm.realName}

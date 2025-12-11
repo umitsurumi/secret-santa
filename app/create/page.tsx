@@ -29,7 +29,7 @@ export default function CreateEvent() {
     } | null>(null);
 
     const [formData, setFormData] = useState({
-        name: "2023 设计部圣诞派对",
+        name: "2025 圣诞派对",
         deadline: "",
         description: "",
     });
@@ -211,7 +211,7 @@ export default function CreateEvent() {
                             <div className="mt-auto pt-6 border-t border-white/10 space-y-3">
                                 <button
                                     onClick={handleGoToDashboard}
-                                    className="w-full bg-gradient-to-r from-christmas-gold to-yellow-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                                    className="w-full bg-linear-to-r from-christmas-gold to-yellow-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
                                 >
                                     进入管理后台
                                     <Share2 className="w-4 h-4" />
@@ -330,7 +330,7 @@ export default function CreateEvent() {
                         {/* Footer Warning & Submit */}
                         <div className="mt-auto pt-6 border-t border-white/10">
                             <div className="flex gap-3 items-start bg-red-500/20 p-3 rounded-lg border border-red-500/30 mb-4">
-                                <AlertOctagon className="w-5 h-5 text-red-300 mt-0.5 flex-shrink-0" />
+                                <AlertOctagon className="w-5 h-5 text-red-300 mt-0.5 shrink-0" />
                                 <p className="text-xs text-red-200 leading-relaxed">
                                     活动创建后将生成唯一的{" "}
                                     <strong>Admin Key</strong>
@@ -340,7 +340,7 @@ export default function CreateEvent() {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full bg-gradient-to-r from-christmas-gold to-yellow-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                                className="w-full bg-linear-to-r from-christmas-gold to-yellow-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                             >
                                 {isSubmitting ? (
                                     <>
