@@ -61,7 +61,7 @@
 * **表单字段**：
   * **公开信息**：昵称（同一活动内唯一）、社交账号（QQ/Discord等）。
   * **隐私信息**（需加密存储）：手机号、收货地址、姓名。
-  * **其他**：祝福语（给接收者）、感谢语（给送礼者-可选）。
+  * **其他**：给送礼人的备注（noteToSanta）、给收礼人的备注（noteToTarget）。
 * **提交后**：生成并展示 `Participant Key`。
   * **前端提示**：强烈建议截图保存，并告知若丢失可找房主。
 
@@ -87,7 +87,7 @@
 
 * **玩家视图**：
   * 输入 `Participant Key`。
-  * **API 响应**：解密返回 `target` 用户的姓名、地址、电话、社交账号、祝福语。
+  * **API 响应**：解密返回 `target` 用户的姓名、地址、电话、社交账号、给送礼人的备注（noteToSanta）。
   * **默认**：不返回 `sender`（送礼者）信息。
 * **房主视图**：
   * 展示匹配列表：`A -> B`, `B -> C`。
@@ -144,8 +144,8 @@ model Participant {
   address      String   // 地址 (加密)
   // ---------------------------------------
 
-  wishes       String   // 给Target的祝福
-  thanks       String?  // 给Sender的感谢(可选)
+  noteToSanta  String?  // 给送礼人的备注（愿望清单、偏好等）
+  noteToTarget String?  // 给收礼人的备注（祝福语等）
 
   // 关系映射
   targetId     String?  @unique // 我要送给谁 (Self-relation ID)
@@ -161,7 +161,66 @@ model Participant {
 
 ---
 
-## 6. 安全与隐私规范 (Security Specifications)
+## 6. 字段使用逻辑说明 (Field Usage Logic)
+
+### 6.1 字段语义澄清
+
+Secret Santa 游戏中有两条完全不同的信息流，需要明确区分：
+
+1. **给送礼人的备注 (noteToSanta)**：
+   * **方向**：接收者 (Target) → 写给 → 送礼者 (Santa)
+   * **内容**：愿望清单、偏好、收货提示等（如："我喜欢蓝色，尺码M，讨厌巧克力"）
+   * **展示时机**：**MATCHED 阶段**，送礼者查看目标对象时显示
+   * **UI 提示**：报名时提示"告诉你的神秘圣诞老人你喜欢什么？"
+
+2. **给收礼人的备注 (noteToTarget)**：
+   * **方向**：送礼者 (Santa) → 写给 → 接收者 (Target)
+   * **内容**：祝福语、谜语、神秘人寄语等（如："圣诞快乐！希望你喜欢这份礼物"）
+   * **展示时机**：**REVEALED 阶段**，接收者查看谁送给自己时显示
+   * **UI 提示**：报名时提示"给那个你将要送礼的幸运儿留一句祝福吧"
+
+### 6.2 交互流程示例
+
+玩家A填写：
+
+* noteToSanta: "我想要一本科幻小说"
+* noteToTarget: "祝你阅读愉快！"
+
+玩家B（抽到A作为目标）在 MATCHED 阶段看到：
+
+* A的 noteToSanta: "我想要一本科幻小说" ← B知道该买什么
+
+活动结束后，玩家A在 REVEALED 阶段看到：
+
+* B的 noteToTarget: "祝你阅读愉快！" ← A感受到祝福
+
+### 6.3 字段流向示意图
+
+```mermaid
+sequenceDiagram
+    participant A as 玩家A (填表人)
+    participant DB as 数据库
+    participant B as 玩家B (送礼人)
+    participant A2 as 玩家A (收礼人)
+
+    Note over A, DB: 阶段二：报名填表
+    A->>DB: 填写 noteToSanta: "我想要一本科幻小说"
+    A->>DB: 填写 noteToTarget: "祝你阅读愉快！"
+
+    Note over DB, B: 阶段四：匹配 (MATCHED)
+    B->>DB: 查询我的目标是谁？
+    DB->>B: 显示 A 的 noteToSanta: "我想要一本科幻小说"
+    Note right of B: B 知道该买什么礼物
+
+    Note over DB, A2: 阶段六：揭晓 (REVEALED)
+    A2->>DB: 查询谁送给了我？
+    DB->>A2: 显示 B 的 noteToTarget: "祝你阅读愉快！"
+    Note right of A2: A 感受到祝福
+```
+
+---
+
+## 7. 安全与隐私规范 (Security Specifications)
 
 1. **敏感数据加密 (Encryption at Rest)**:
     * **字段**：`realName`, `phone`, `address` 必须在写入数据库前加密。
@@ -177,7 +236,7 @@ model Participant {
 
 ---
 
-## 7. UI/UX 建议 (UI Guidelines)
+## 8. UI/UX 建议 (UI Guidelines)
 
 * **风格 (Vibe)**:
   * 节日氛围：圣诞红 (#D42426)、松树绿 (#165B33)、雪白、金色点缀。
@@ -190,7 +249,7 @@ model Participant {
 
 ---
 
-## 8. 开发路线图 (Roadmap for AI Vibe Coding)
+## 9. 开发路线图 (Roadmap for AI Vibe Coding)
 
 1. **Step 1: Scaffolding**: 初始化 Next.js + Prisma，配置数据库连接。
 2. **Step 2: Core Models**: 定义 Prisma Schema 并迁移数据库。
