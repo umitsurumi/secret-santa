@@ -34,13 +34,23 @@ export async function GET(request: NextRequest) {
         const { activity, target, sender } = participant;
 
         // Response structure
+        // Decrypt own data for editing purposes (User needs to see what they entered)
+        const decryptedOwnData = decryptParticipantData({
+            realName: participant.realName,
+            phone: participant.phone,
+            address: participant.address,
+        });
+
         const responseData: any = {
             participant: {
                 id: participant.id,
                 nickname: participant.nickname,
                 socialAccount: participant.socialAccount,
-                // We don't necessarily need to return the user's own sensitive info decrypted here unless they want to verify it,
-                // but for the reveal purpose, it's not the priority. Let's keep it minimal.
+                realName: decryptedOwnData.realName,
+                phone: decryptedOwnData.phone,
+                address: decryptedOwnData.address,
+                noteToSanta: participant.noteToSanta,
+                noteToTarget: participant.noteToTarget,
             },
             activity: {
                 id: activity.id,

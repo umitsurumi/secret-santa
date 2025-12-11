@@ -153,11 +153,6 @@ export default function RegistrationPage({
                             </div>
 
                             <div className="grid grid-cols-4 gap-4">
-                                <div className="col-span-1 flex justify-center">
-                                    <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center cursor-pointer hover:bg-white/20 transition">
-                                        <Camera className="w-6 h-6 text-white/50" />
-                                    </div>
-                                </div>
                                 <div className="col-span-3 space-y-3">
                                     <input
                                         name="nickname"

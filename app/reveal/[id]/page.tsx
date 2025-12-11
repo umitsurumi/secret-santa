@@ -11,6 +11,10 @@ import {
     ArrowRightCircle,
     Quote,
     ArrowLeft,
+    Edit2,
+    LogOut,
+    Save,
+    X,
 } from "lucide-react";
 
 interface RevealData {
@@ -18,6 +22,11 @@ interface RevealData {
         id: string;
         nickname: string;
         socialAccount: string;
+        realName?: string;
+        phone?: string;
+        address?: string;
+        noteToSanta?: string;
+        noteToTarget?: string;
     };
     activity: {
         id: string;
@@ -51,6 +60,20 @@ export default function RevealResultPage() {
     const [error, setError] = useState("");
     const [isOpened, setIsOpened] = useState(false); // Controls envelope opening
 
+    // Edit State
+    const [isEditing, setIsEditing] = useState(false);
+    const [editForm, setEditForm] = useState({
+        nickname: "",
+        socialAccount: "",
+        realName: "",
+        phone: "",
+        address: "",
+        noteToSanta: "",
+        noteToTarget: "",
+    });
+    const [isSaving, setIsSaving] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
     const id = params.id as string;
 
     useEffect(() => {
@@ -64,6 +87,21 @@ export default function RevealResultPage() {
                 }
 
                 setData(result.data);
+
+                // Pre-fill edit form
+                if (result.data.participant) {
+                    setEditForm({
+                        nickname: result.data.participant.nickname || "",
+                        socialAccount:
+                            result.data.participant.socialAccount || "",
+                        realName: result.data.participant.realName || "",
+                        phone: result.data.participant.phone || "",
+                        address: result.data.participant.address || "",
+                        noteToSanta: result.data.participant.noteToSanta || "",
+                        noteToTarget:
+                            result.data.participant.noteToTarget || "",
+                    });
+                }
             } catch (err: any) {
                 setError(err.message);
             } finally {
@@ -75,6 +113,49 @@ export default function RevealResultPage() {
             fetchData();
         }
     }, [id]);
+
+    const handleUpdate = async () => {
+        setIsSaving(true);
+        try {
+            const res = await fetch(`/api/participants/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(editForm),
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || "更新失败");
+            }
+
+            // Reload data to reflect changes
+            window.location.reload();
+        } catch (err: any) {
+            alert(err.message);
+            setIsSaving(false);
+        }
+    };
+
+    const handleExit = async () => {
+        if (!confirm("确定要退出活动吗？此操作不可撤销。")) return;
+
+        setIsDeleting(true);
+        try {
+            const res = await fetch(`/api/participants/${id}`, {
+                method: "DELETE",
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || "退出失败");
+            }
+
+            router.push("/");
+        } catch (err: any) {
+            alert(err.message);
+            setIsDeleting(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -105,6 +186,149 @@ export default function RevealResultPage() {
 
     // SCENARIO 1: NOT STARTED (OPEN)
     if (activity.status === "OPEN") {
+        if (isEditing) {
+            return (
+                <div className="min-h-screen bg-festive-gradient flex items-center justify-center p-6 overflow-y-auto">
+                    <div className="glass-panel p-8 rounded-2xl max-w-md w-full my-8">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-serif font-bold text-white">
+                                更新信息
+                            </h2>
+                            <button
+                                onClick={() => setIsEditing(false)}
+                                className="text-white/60 hover:text-white"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-medium text-white/60 mb-1">
+                                    昵称
+                                </label>
+                                <input
+                                    value={editForm.nickname}
+                                    onChange={(e) =>
+                                        setEditForm({
+                                            ...editForm,
+                                            nickname: e.target.value,
+                                        })
+                                    }
+                                    className="w-full bg-black/20 border border-white/10 rounded-lg p-2.5 text-white text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-white/60 mb-1">
+                                    社交账号
+                                </label>
+                                <input
+                                    value={editForm.socialAccount}
+                                    onChange={(e) =>
+                                        setEditForm({
+                                            ...editForm,
+                                            socialAccount: e.target.value,
+                                        })
+                                    }
+                                    className="w-full bg-black/20 border border-white/10 rounded-lg p-2.5 text-white text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-white/60 mb-1">
+                                    真实姓名
+                                </label>
+                                <input
+                                    value={editForm.realName}
+                                    onChange={(e) =>
+                                        setEditForm({
+                                            ...editForm,
+                                            realName: e.target.value,
+                                        })
+                                    }
+                                    className="w-full bg-black/20 border border-white/10 rounded-lg p-2.5 text-white text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-white/60 mb-1">
+                                    手机号
+                                </label>
+                                <input
+                                    value={editForm.phone}
+                                    onChange={(e) =>
+                                        setEditForm({
+                                            ...editForm,
+                                            phone: e.target.value,
+                                        })
+                                    }
+                                    className="w-full bg-black/20 border border-white/10 rounded-lg p-2.5 text-white text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-white/60 mb-1">
+                                    收货地址
+                                </label>
+                                <textarea
+                                    value={editForm.address}
+                                    onChange={(e) =>
+                                        setEditForm({
+                                            ...editForm,
+                                            address: e.target.value,
+                                        })
+                                    }
+                                    className="w-full bg-black/20 border border-white/10 rounded-lg p-2.5 text-white text-sm h-20 resize-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-white/60 mb-1">
+                                    给送礼人的备注 (愿望清单)
+                                </label>
+                                <textarea
+                                    value={editForm.noteToSanta}
+                                    onChange={(e) =>
+                                        setEditForm({
+                                            ...editForm,
+                                            noteToSanta: e.target.value,
+                                        })
+                                    }
+                                    className="w-full bg-black/20 border border-white/10 rounded-lg p-2.5 text-white text-sm h-20 resize-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-white/60 mb-1">
+                                    给收礼人的备注 (祝福语)
+                                </label>
+                                <textarea
+                                    value={editForm.noteToTarget}
+                                    onChange={(e) =>
+                                        setEditForm({
+                                            ...editForm,
+                                            noteToTarget: e.target.value,
+                                        })
+                                    }
+                                    className="w-full bg-black/20 border border-white/10 rounded-lg p-2.5 text-white text-sm h-20 resize-none"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="mt-8 flex gap-4">
+                            <button
+                                onClick={handleUpdate}
+                                disabled={isSaving}
+                                className="flex-1 bg-christmas-gold hover:bg-yellow-500 text-christmas-red font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                            >
+                                {isSaving ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Save className="w-4 h-4" />
+                                )}
+                                保存更改
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="min-h-screen bg-festive-gradient flex items-center justify-center p-6">
                 <div className="glass-panel p-8 rounded-2xl max-w-md w-full text-center">
@@ -129,11 +353,33 @@ export default function RevealResultPage() {
                             </p>
                         </div>
                     )}
-                    <div className="bg-black/20 p-4 rounded-lg">
+                    <div className="bg-black/20 p-4 rounded-lg mb-6">
                         <p className="text-xs text-white/40 uppercase tracking-widest mb-1">
                             你的状态
                         </p>
                         <p className="text-white font-medium">准备送礼</p>
+                    </div>
+
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => setIsEditing(true)}
+                            className="flex-1 bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                        >
+                            <Edit2 className="w-4 h-4" />
+                            修改信息
+                        </button>
+                        <button
+                            onClick={handleExit}
+                            disabled={isDeleting}
+                            className="flex-1 bg-red-500/10 hover:bg-red-500/20 text-red-200 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                        >
+                            {isDeleting ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                                <LogOut className="w-4 h-4" />
+                            )}
+                            退出活动
+                        </button>
                     </div>
                 </div>
             </div>
