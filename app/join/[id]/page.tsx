@@ -21,8 +21,8 @@ export default function RegistrationPage({
         realName: "",
         phone: "",
         address: "",
-        wishes: "",
-        thanks: "",
+        noteToSanta: "",
+        noteToTarget: "",
     });
 
     const handleSubmit = async () => {
@@ -32,7 +32,7 @@ export default function RegistrationPage({
             !formData.realName ||
             !formData.phone ||
             !formData.address ||
-            !formData.wishes
+            !formData.noteToSanta
         ) {
             setError("请填写所有必填字段");
             return;
@@ -185,23 +185,48 @@ export default function RegistrationPage({
                             </div>
                         </div>
 
-                        {/* Wishes Section */}
+                        {/* Note to Santa (Wishes) */}
                         <div className="space-y-2">
                             <label className="text-white text-sm flex items-center gap-2">
                                 <Sparkles className="w-4 h-4 text-christmas-gold" />
-                                你的愿望清单
+                                给送礼人的备注（愿望清单）
                             </label>
                             <div className="bg-[#fffdf5] rounded-lg p-1 relative shadow-inner">
                                 <div className="border border-dashed border-gray-300 rounded p-3 h-28">
                                     <textarea
-                                        name="wishes"
-                                        value={formData.wishes}
+                                        name="noteToSanta"
+                                        value={formData.noteToSanta}
                                         onChange={handleChange}
                                         className="w-full h-full bg-transparent text-gray-700 text-sm focus:outline-none resize-none leading-relaxed placeholder-gray-400"
-                                        placeholder="亲爱的 Santa，我是香薰蜡烛爱好者，或者一本好书也行..."
+                                        placeholder="告诉你的神秘圣诞老人你喜欢什么？例如：我喜欢蓝色，尺码M，讨厌巧克力..."
                                     ></textarea>
                                 </div>
                             </div>
+                            <p className="text-xs text-white/50">
+                                这段留言将展示给你的送礼人，帮助TA挑选礼物。
+                            </p>
+                        </div>
+
+                        {/* Note to Target (Thanks) */}
+                        <div className="space-y-2">
+                            <label className="text-white text-sm flex items-center gap-2">
+                                <Sparkles className="w-4 h-4 text-christmas-gold" />
+                                给收礼人的备注（祝福语）
+                            </label>
+                            <div className="bg-[#fffdf5] rounded-lg p-1 relative shadow-inner">
+                                <div className="border border-dashed border-gray-300 rounded p-3 h-28">
+                                    <textarea
+                                        name="noteToTarget"
+                                        value={formData.noteToTarget}
+                                        onChange={handleChange}
+                                        className="w-full h-full bg-transparent text-gray-700 text-sm focus:outline-none resize-none leading-relaxed placeholder-gray-400"
+                                        placeholder="给那个你将要送礼的幸运儿留一句祝福吧！例如：圣诞快乐！希望你喜欢这份礼物..."
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <p className="text-xs text-white/50">
+                                这段留言将在活动揭晓后展示给你的收礼人。
+                            </p>
                         </div>
 
                         {error && (

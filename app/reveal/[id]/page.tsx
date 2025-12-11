@@ -31,12 +31,13 @@ interface RevealData {
         realName: string;
         phone: string;
         address: string;
-        wishes: string;
+        noteToSanta: string;
     };
     sender?: {
         nickname: string;
         socialAccount: string;
-        wishes: string; // Message to me
+        noteToTarget: string; // Message to me (noteToTarget)
+        noteToSanta?: string; // Backward compatibility
     };
     message?: string; // For status messages like "Waiting for matching"
 }
@@ -251,8 +252,8 @@ export default function RevealResultPage() {
                                     </span>
                                 </div>
                                 <p className="text-white/90 text-sm leading-relaxed font-light relative z-10 whitespace-pre-wrap">
-                                    {target?.wishes
-                                        ? `"${target.wishes}"`
+                                    {target?.noteToSanta
+                                        ? `"${target.noteToSanta}"`
                                         : "TA 没有留下特别的愿望，自由发挥吧！"}
                                 </p>
                                 <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-white/5 to-transparent rounded-tr-2xl rounded-bl-3xl"></div>
@@ -341,12 +342,12 @@ export default function RevealResultPage() {
                                         </div>
                                     </div>
 
-                                    {/* Message from Sender (which is their 'wishes' to me) */}
+                                    {/* Message from Sender (which is their 'thanks' to me) */}
                                     <div className="mt-6 bg-white p-4 rounded shadow-sm border border-slate-100 relative">
                                         <Quote className="w-4 h-4 text-slate-300 absolute -top-2 -left-2 bg-white rounded-full p-0.5" />
                                         <p className="text-sm font-serif italic text-slate-600 whitespace-pre-wrap">
-                                            {sender.wishes
-                                                ? `"${sender.wishes}"`
+                                            {sender.noteToTarget
+                                                ? `"${sender.noteToTarget}"`
                                                 : "圣诞快乐！"}
                                         </p>
                                     </div>

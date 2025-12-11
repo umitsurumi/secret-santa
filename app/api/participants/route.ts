@@ -13,8 +13,8 @@ export async function POST(request: NextRequest) {
             realName,
             phone,
             address,
-            wishes,
-            thanks,
+            noteToSanta,
+            noteToTarget,
         } = body;
 
         // 1. 基础校验
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
             !realName ||
             !phone ||
             !address ||
-            !wishes
+            !noteToSanta
         ) {
             return NextResponse.json(
                 { error: "请填写所有必填字段" },
@@ -89,8 +89,8 @@ export async function POST(request: NextRequest) {
                 nickname,
                 socialAccount: socialAccount || "",
                 ...encryptedData,
-                wishes,
-                thanks: thanks || "",
+                noteToSanta,
+                noteToTarget: noteToTarget || "",
             },
         });
 

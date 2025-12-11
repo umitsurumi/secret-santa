@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
                 responseData.target = {
                     nickname: target.nickname,
                     socialAccount: target.socialAccount,
-                    wishes: target.wishes,
+                    noteToSanta: target.noteToSanta,
                     ...decryptedTarget,
                 };
             }
@@ -80,14 +80,15 @@ export async function GET(request: NextRequest) {
         if (activity.status === "REVEALED") {
             // Reveal Sender
             if (sender) {
-                // usually we don't need the sender's private info (address/phone), just their identity.
-                // The Sender's `wishes` are for ME (their target).
-                // So I should see `sender.wishes`.
+                // The sender's `thanks` is the note to target (祝福语) that they wrote for the recipient (me).
+                // We should return `sender.thanks` as the message.
 
                 responseData.sender = {
                     nickname: sender.nickname,
                     socialAccount: sender.socialAccount,
-                    wishes: sender.wishes, // The message the sender wrote for their target (me)
+                    noteToTarget: sender.noteToTarget, // The message the sender wrote for their target (me)
+                    // Keep `noteToSanta` for backward compatibility (optional)
+                    noteToSanta: sender.noteToSanta,
                 };
             }
         }
