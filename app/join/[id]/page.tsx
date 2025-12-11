@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Camera, AtSign, Lock, Sparkles, Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,11 @@ export default function RegistrationPage({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState("");
 
+    const [activityInfo, setActivityInfo] = useState<{
+        name: string;
+        description: string | null;
+    } | null>(null);
+    const [loadingActivity, setLoadingActivity] = useState(true);
     const [formData, setFormData] = useState({
         nickname: "",
         socialAccount: "",
@@ -73,6 +78,25 @@ export default function RegistrationPage({
         }
     };
 
+    useEffect(() => {
+        const fetchActivity = async () => {
+            try {
+                const res = await fetch(`/api/activities/${inviteCode}`);
+                const data = await res.json();
+                if (res.ok) {
+                    setActivityInfo(data.data);
+                } else {
+                    console.error("Failed to fetch activity:", data.error);
+                }
+            } catch (err) {
+                console.error("Error fetching activity:", err);
+            } finally {
+                setLoadingActivity(false);
+            }
+        };
+        fetchActivity();
+    }, [inviteCode]);
+
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -101,6 +125,20 @@ export default function RegistrationPage({
                             1/2
                         </div>
                     </div>
+
+                    {/* Activity Description */}
+                    {activityInfo && activityInfo.description && (
+                        <div className="px-6 py-4 border-b border-white/5 bg-[#0d2119]/60">
+                            <div className="flex items-start gap-2">
+                                <span className="text-white/60 text-xs uppercase tracking-wider shrink-0">
+                                    活动备注:
+                                </span>
+                                <p className="text-white/80 text-sm flex-1 whitespace-pre-wrap">
+                                    {activityInfo.description}
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="px-6 py-6 space-y-8">
                         {/* Public Profile Section */}

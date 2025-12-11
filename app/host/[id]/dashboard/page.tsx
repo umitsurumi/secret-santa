@@ -19,6 +19,9 @@ import {
     Unlock,
     CheckCircle2,
     Shuffle,
+    Edit,
+    Save,
+    X,
 } from "lucide-react";
 import { format } from "date-fns";
 // @ts-ignore
@@ -80,6 +83,9 @@ export default function HostDashboard() {
     const [isMatching, setIsMatching] = useState(false);
     const [isDeleting, setIsDeleting] = useState<string | null>(null);
     const [isRevealing, setIsRevealing] = useState(false);
+    const [isEditingDescription, setIsEditingDescription] = useState(false);
+    const [editedDescription, setEditedDescription] = useState("");
+    const [isUpdatingDescription, setIsUpdatingDescription] = useState(false);
 
     useEffect(() => {
         // Try to get key from URL or LocalStorage (Mock for now, best practice is sensitive)
@@ -271,6 +277,35 @@ export default function HostDashboard() {
         }
     };
 
+    const handleUpdateDescription = async () => {
+        if (!activity) return;
+        setIsUpdatingDescription(true);
+        try {
+            const res = await fetch(`/api/activities/${activityId}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    adminKey,
+                    description: editedDescription,
+                }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+
+            // 更新本地状态
+            setActivity({
+                ...activity,
+                description: editedDescription,
+            });
+            setIsEditingDescription(false);
+            alert("备注已更新");
+        } catch (err: any) {
+            alert(err.message);
+        } finally {
+            setIsUpdatingDescription(false);
+        }
+    };
+
     // --- Render Helpers ---
 
     if (loading) {
@@ -365,6 +400,80 @@ export default function HostDashboard() {
                         截止时间:{" "}
                         {format(new Date(activity.deadline), "MM/dd HH:mm")}
                     </p>
+                </div>
+
+                {/* Description Card */}
+                <div className="px-4 py-3 border-b border-white/10 bg-[#1E293B]/30">
+                    <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="text-white/60 text-xs uppercase tracking-wider">
+                                    活动备注
+                                </span>
+                                {activity.status === "OPEN" && (
+                                    <button
+                                        onClick={() => {
+                                            if (!isEditingDescription) {
+                                                setEditedDescription(
+                                                    activity.description || ""
+                                                );
+                                                setIsEditingDescription(true);
+                                            } else {
+                                                setIsEditingDescription(false);
+                                            }
+                                        }}
+                                        className="p-1 text-white/40 hover:text-white rounded"
+                                        title="编辑备注"
+                                    >
+                                        {isEditingDescription ? (
+                                            <X className="w-3 h-3" />
+                                        ) : (
+                                            <Edit className="w-3 h-3" />
+                                        )}
+                                    </button>
+                                )}
+                            </div>
+                            {isEditingDescription ? (
+                                <div className="space-y-2">
+                                    <textarea
+                                        value={editedDescription}
+                                        onChange={(e) =>
+                                            setEditedDescription(e.target.value)
+                                        }
+                                        className="w-full glass-input p-2 rounded text-white text-sm bg-black/30 resize-none"
+                                        rows={3}
+                                        placeholder="输入活动备注..."
+                                    />
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={handleUpdateDescription}
+                                            disabled={isUpdatingDescription}
+                                            className="px-3 py-1 bg-christmas-gold text-white text-xs rounded flex items-center gap-1"
+                                        >
+                                            {isUpdatingDescription ? (
+                                                <Loader2 className="w-3 h-3 animate-spin" />
+                                            ) : (
+                                                <Save className="w-3 h-3" />
+                                            )}
+                                            保存
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                setIsEditingDescription(false)
+                                            }
+                                            className="px-3 py-1 bg-white/10 text-white text-xs rounded"
+                                        >
+                                            取消
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <p className="text-white/80 text-sm whitespace-pre-wrap">
+                                    {activity.description || "暂无备注"}
+                                </p>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 {/* TABS */}

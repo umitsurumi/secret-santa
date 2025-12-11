@@ -44,6 +44,7 @@ export async function GET(request: NextRequest) {
             activity: {
                 id: activity.id,
                 name: activity.name,
+                description: activity.description,
                 status: activity.status,
                 deadline: activity.deadline,
             },

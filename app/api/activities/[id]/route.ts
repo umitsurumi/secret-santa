@@ -51,7 +51,7 @@ export async function PATCH(
     try {
         const { id } = await params;
         const body = await request.json();
-        const { adminKey, deadline, status } = body;
+        const { adminKey, deadline, status, description } = body;
 
         if (!id) {
             return NextResponse.json(
@@ -113,6 +113,19 @@ export async function PATCH(
             updateData.deadline = newDeadline;
         }
 
+        // Update Description (Only if OPEN)
+        if (description !== undefined) {
+            if (activity.status !== "OPEN") {
+                return NextResponse.json(
+                    {
+                        error: "Cannot update description after activity has started",
+                    },
+                    { status: 403 }
+                );
+            }
+            updateData.description = description;
+        }
+
         // Update Status (e.g. to REVEALED)
         if (status) {
             // Validate status transitions
@@ -141,7 +154,7 @@ export async function PATCH(
         }
 
         const updatedActivity = await prisma.activity.update({
-            where: { id },
+            where: { id: idWithoutPrefix },
             data: updateData,
         });
 

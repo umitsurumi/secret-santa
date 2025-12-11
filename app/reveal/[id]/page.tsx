@@ -22,6 +22,7 @@ interface RevealData {
     activity: {
         id: string;
         name: string;
+        description: string | null;
         status: "OPEN" | "MATCHED" | "REVEALED";
         deadline: string;
     };
@@ -118,6 +119,16 @@ export default function RevealResultPage() {
                         <br />
                         房主尚未开始抽选。请耐心等待，直到截止日期或房主手动触发。
                     </p>
+                    {activity.description && (
+                        <div className="bg-black/20 p-4 rounded-lg mb-6 text-left">
+                            <p className="text-xs text-white/40 uppercase tracking-widest mb-1">
+                                活动备注
+                            </p>
+                            <p className="text-white/80 text-sm whitespace-pre-wrap">
+                                {activity.description}
+                            </p>
+                        </div>
+                    )}
                     <div className="bg-black/20 p-4 rounded-lg">
                         <p className="text-xs text-white/40 uppercase tracking-widest mb-1">
                             你的状态
@@ -221,6 +232,20 @@ export default function RevealResultPage() {
                         </div>
                     </div>
                 </div>
+
+                {/* Activity Description */}
+                {activity.description && (
+                    <div className="px-6 py-3 bg-[#1C1C1E] border-b border-white/10">
+                        <div className="flex items-start gap-2">
+                            <span className="text-white/60 text-xs uppercase tracking-wider shrink-0">
+                                活动备注:
+                            </span>
+                            <p className="text-white/80 text-sm flex-1 whitespace-pre-wrap">
+                                {activity.description}
+                            </p>
+                        </div>
+                    </div>
+                )}
 
                 {/* Content Body */}
                 <div className="flex-1 px-6 pt-12 pb-6 overflow-y-auto">
