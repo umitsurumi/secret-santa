@@ -204,16 +204,12 @@ export default function RevealResultPage() {
     }
 
     // SCENARIO 3: TARGET DETAILS (CARD VIEW)
-    // If status is REVEALED, we might also show the Sender, but let's prioritize the Target info first
-    // and maybe put the Sender info at the bottom or in a separate tab?
-    // The design for REVEALED shows a "The Circle is Complete" screen.
-    // Let's toggle between "My Target" and "My Santa" if REVEALED.
-
+    // Refactored for better responsiveness and layout stability
     return (
         <div className="min-h-screen bg-[#0F172A] flex justify-center p-0 md:p-8">
-            <div className="w-full max-w-md bg-[#1C1C1E] overflow-hidden flex flex-col h-[100dvh] md:min-h-screen relative">
+            <div className="w-full max-w-5xl bg-[#1C1C1E] md:rounded-3xl overflow-hidden shadow-2xl flex flex-col min-h-screen md:min-h-0 relative transition-all duration-300">
                 {/* Header / Avatar Area */}
-                <div className="h-1/3 w-full bg-[#8E001C] relative shrink-0">
+                <div className="h-48 md:h-64 w-full bg-[#8E001C] relative shrink-0">
                     <div className="absolute inset-0 overflow-hidden">
                         <div className="absolute w-64 h-64 bg-white/10 rounded-full blur-3xl -top-10 -right-10"></div>
                         <div className="absolute w-64 h-64 bg-black/20 rounded-full blur-3xl bottom-0 left-0"></div>
@@ -221,170 +217,197 @@ export default function RevealResultPage() {
 
                     <button
                         onClick={() => router.push("/")}
-                        className="absolute top-12 left-6 bg-black/20 p-2 rounded-full backdrop-blur-md z-20 hover:bg-black/40 transition"
+                        className="absolute top-8 left-6 md:top-10 md:left-10 bg-black/20 p-2 rounded-full backdrop-blur-md z-30 hover:bg-black/40 transition"
                     >
                         <ArrowLeft className="w-5 h-5 text-white" />
                     </button>
 
-                    <div className="absolute -bottom-10 left-6 z-20">
-                        <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#D4AF37] to-yellow-600 shadow-xl flex items-center justify-center border-4 border-[#1C1C1E]">
-                            <span className="text-4xl select-none">🎁</span>
+                    <div className="absolute -bottom-10 left-6 md:left-10 z-20">
+                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-[#D4AF37] to-yellow-600 shadow-xl flex items-center justify-center border-4 border-[#1C1C1E]">
+                            <span className="text-4xl md:text-5xl select-none">
+                                🎁
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                {/* Activity Description */}
-                {activity.description && (
-                    <div className="px-6 py-3 bg-[#1C1C1E] border-b border-white/10">
-                        <div className="flex items-start gap-2">
-                            <span className="text-white/60 text-xs uppercase tracking-wider shrink-0">
-                                活动备注:
-                            </span>
-                            <p className="text-white/80 text-sm flex-1 whitespace-pre-wrap">
-                                {activity.description}
+                {/* Body Content Wrapper */}
+                <div className="flex-1 flex flex-col">
+                    {/* Activity Description & Info Bar */}
+                    {/* Padding top is adjusted to prevent icon overlap on mobile, and margin left for desktop */}
+                    <div className="px-6 md:px-10 pt-16 md:pt-6 pb-6 bg-[#1C1C1E] border-b border-white/10 min-h-[100px] flex flex-col justify-center">
+                        <div className="md:ml-48 transition-all duration-300">
+                            {activity.description ? (
+                                <div className="flex items-start gap-3">
+                                    <span className="text-white/50 text-xs uppercase tracking-wider shrink-0 mt-1">
+                                        活动备注:
+                                    </span>
+                                    <p className="text-white/90 text-sm md:text-base flex-1 whitespace-pre-wrap leading-relaxed">
+                                        {activity.description}
+                                    </p>
+                                </div>
+                            ) : (
+                                <p className="text-white/30 text-sm italic">
+                                    没有活动备注
+                                </p>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Main Content Grid */}
+                    <div className="flex-1 p-6 md:p-10">
+                        <div
+                            className={`grid grid-cols-1 gap-12 ${
+                                activity.status === "REVEALED" && sender
+                                    ? "lg:grid-cols-2"
+                                    : "max-w-2xl mx-auto"
+                            }`}
+                        >
+                            {/* LEFT COLUMN: TARGET (Always visible here) */}
+                            <div className="space-y-6">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <p className="text-white/40 text-xs uppercase tracking-wider mb-2">
+                                            你是以下参与者的圣诞老人
+                                        </p>
+                                        <h2 className="text-white font-serif text-3xl md:text-4xl font-bold">
+                                            {target?.nickname || "Unknown"}
+                                        </h2>
+                                        {target?.socialAccount && (
+                                            <p className="text-white/50 text-sm mt-1 flex items-center gap-2">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-green-500/50"></span>
+                                                {target.socialAccount}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Wishes Card */}
+                                <div className="bg-[#2C2C2E] p-6 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors shadow-lg">
+                                    <div className="flex items-center gap-2 mb-4 relative z-10">
+                                        <div className="p-1.5 bg-[#D4AF37]/10 rounded-lg">
+                                            <Gift className="w-4 h-4 text-[#D4AF37]" />
+                                        </div>
+                                        <span className="text-white/80 font-medium text-sm tracking-wide">
+                                            TA 的愿望
+                                        </span>
+                                    </div>
+                                    <p className="text-white/90 text-base leading-relaxed font-light relative z-10 whitespace-pre-wrap">
+                                        {target?.noteToSanta
+                                            ? target.noteToSanta
+                                            : "TA 没有留下特别的愿望，自由发挥吧！"}
+                                    </p>
+                                    <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-xl"></div>
+                                </div>
+
+                                {/* Private Info Card */}
+                                <div className="bg-[#2C2C2E] rounded-2xl border border-white/5 overflow-hidden shadow-lg">
+                                    <div className="p-6 space-y-5">
+                                        <div className="flex items-start gap-4">
+                                            <div className="mt-1 bg-white/5 p-2.5 rounded-xl shrink-0">
+                                                <MapPin className="w-5 h-5 text-white/50" />
+                                            </div>
+                                            <div>
+                                                <div className="text-[10px] text-white/40 uppercase mb-1 tracking-wider">
+                                                    收货地址
+                                                </div>
+                                                <div className="text-white/80 text-sm md:text-base leading-relaxed select-text">
+                                                    {target?.address ||
+                                                        "等待揭晓..."}
+                                                </div>
+                                                <div className="text-[10px] text-white/40 mt-2 flex items-center gap-1.5">
+                                                    <span className="opacity-50">
+                                                        收件人:
+                                                    </span>
+                                                    <span className="text-white/60 font-medium">
+                                                        {target?.realName}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="h-px bg-white/5 mx-2"></div>
+
+                                        <div className="flex items-start gap-4">
+                                            <div className="mt-1 bg-white/5 p-2.5 rounded-xl shrink-0">
+                                                <Phone className="w-5 h-5 text-white/50" />
+                                            </div>
+                                            <div>
+                                                <div className="text-[10px] text-white/40 uppercase mb-1 tracking-wider">
+                                                    手机号码
+                                                </div>
+                                                <div className="text-white/80 text-sm md:text-base font-mono tracking-wider select-text">
+                                                    {target?.phone ||
+                                                        "等待揭晓..."}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* RIGHT COLUMN: SENDER (Only if REVEALED) */}
+                            {activity.status === "REVEALED" && sender && (
+                                <div className="space-y-6 lg:border-l lg:border-white/10 lg:pl-12 relative">
+                                    <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
+
+                                    <div className="flex flex-col h-full">
+                                        <div className="mb-6">
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20 rounded-full text-[10px] font-bold tracking-widest uppercase mb-4">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B] animate-pulse"></span>
+                                                Secret Santa Revealed
+                                            </div>
+                                            <h2 className="text-white font-serif text-3xl md:text-4xl font-bold">
+                                                来自你的圣诞老人
+                                            </h2>
+                                        </div>
+
+                                        <div className="bg-[#f1f5f9] rounded-2xl shadow-xl p-8 text-slate-800 relative transform transition-transform hover:scale-[1.01] duration-300">
+                                            {/* Decorative Tape */}
+                                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-8 bg-red-600/90 shadow-sm rotate-1 flex items-center justify-center">
+                                                <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">
+                                                    Merry Christmas
+                                                </span>
+                                            </div>
+
+                                            <div className="mt-4 flex flex-col items-center gap-5 text-center">
+                                                <div className="w-20 h-20 rounded-full bg-white border-4 border-slate-100 shadow-inner flex items-center justify-center text-4xl">
+                                                    🎅
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold text-2xl text-slate-900">
+                                                        {sender.nickname}
+                                                    </h3>
+                                                    {sender.socialAccount && (
+                                                        <p className="text-slate-500 text-sm mt-1">
+                                                            {
+                                                                sender.socialAccount
+                                                            }
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-8 relative">
+                                                <Quote className="w-8 h-8 text-slate-200 absolute -top-4 -left-2" />
+                                                <div className="relative z-10 bg-white/60 p-6 rounded-xl border border-slate-200/60 backdrop-blur-sm">
+                                                    <p className="text-base font-serif italic text-slate-700 leading-relaxed whitespace-pre-wrap">
+                                                        {sender.noteToTarget ||
+                                                            "祝你拥有一个美好的圣诞节！"}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="mt-12 md:mt-20 text-center">
+                            <p className="text-white/20 text-xs tracking-widest uppercase">
+                                Made with ❤️ for Secret Santa
                             </p>
                         </div>
-                    </div>
-                )}
-
-                {/* Content Body */}
-                <div className="flex-1 px-6 pt-12 pb-6 overflow-y-auto">
-                    {/* Target Info Section */}
-                    <div className="mb-8">
-                        <div className="flex justify-between items-start mb-6">
-                            <div>
-                                <p className="text-white/40 text-xs uppercase tracking-wider mb-1">
-                                    你是以下参与者的圣诞老人
-                                </p>
-                                <h2 className="text-white font-serif text-3xl font-bold">
-                                    {target?.nickname || "Unknown"}
-                                </h2>
-                                {target?.socialAccount && (
-                                    <p className="text-white/50 text-xs mt-1">
-                                        {target.socialAccount}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="space-y-4">
-                            {/* Wishes Card */}
-                            <div className="bg-[#2C2C2E] p-5 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors">
-                                <div className="flex items-center gap-2 mb-3 relative z-10">
-                                    <Gift className="w-4 h-4 text-[#D4AF37]" />
-                                    <span className="text-white/80 font-medium text-sm">
-                                        TA 的愿望
-                                    </span>
-                                </div>
-                                <p className="text-white/90 text-sm leading-relaxed font-light relative z-10 whitespace-pre-wrap">
-                                    {target?.noteToSanta
-                                        ? `"${target.noteToSanta}"`
-                                        : "TA 没有留下特别的愿望，自由发挥吧！"}
-                                </p>
-                                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-white/5 to-transparent rounded-tr-2xl rounded-bl-3xl"></div>
-                            </div>
-
-                            {/* Private Info Card */}
-                            <div className="bg-[#2C2C2E] rounded-2xl border border-white/5 overflow-hidden">
-                                <div className="p-5 space-y-4">
-                                    <div className="flex items-start gap-4">
-                                        <div className="mt-1 bg-white/5 p-2 rounded-lg">
-                                            <MapPin className="w-4 h-4 text-white/50" />
-                                        </div>
-                                        <div>
-                                            <div className="text-[10px] text-white/40 uppercase mb-1">
-                                                收货地址
-                                            </div>
-                                            <div className="text-white/80 text-sm leading-relaxed select-text">
-                                                {target?.address ||
-                                                    "等待揭晓..."}
-                                            </div>
-                                            <div className="text-[10px] text-white/40 mt-1">
-                                                * 真实姓名: {target?.realName}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="h-px bg-white/5"></div>
-
-                                    <div className="flex items-start gap-4">
-                                        <div className="mt-1 bg-white/5 p-2 rounded-lg">
-                                            <Phone className="w-4 h-4 text-white/50" />
-                                        </div>
-                                        <div>
-                                            <div className="text-[10px] text-white/40 uppercase mb-1">
-                                                手机号码
-                                            </div>
-                                            <div className="text-white/80 text-sm font-mono tracking-wider select-text">
-                                                {target?.phone || "等待揭晓..."}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* SENDER REVEAL SECTION (Only if REVEALED) */}
-                    {activity.status === "REVEALED" && sender && (
-                        <div className="mt-10 pt-10 border-t border-white/10">
-                            <div className="flex justify-center mb-6">
-                                <span className="px-3 py-1 bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40 rounded-full text-[10px] font-bold tracking-widest uppercase animate-pulse">
-                                    Secret Santa 已揭晓
-                                </span>
-                            </div>
-
-                            <div className="relative group perspective-1000 mb-8">
-                                {/* Ribbon Decor */}
-                                <div
-                                    className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-12 bg-red-600 z-20 shadow-lg"
-                                    style={{
-                                        clipPath:
-                                            "polygon(0 0, 100% 0, 100% calc(100% - 10px), 50% 100%, 0 calc(100% - 10px))",
-                                    }}
-                                ></div>
-
-                                <div className="bg-[#f1f5f9] rounded-lg shadow-2xl p-6 text-slate-800 relative rotate-1 group-hover:rotate-0 transition-transform duration-500">
-                                    <div className="text-center border-b-2 border-dashed border-slate-300 pb-4 mb-4">
-                                        <p className="font-serif text-red-700 font-bold text-lg">
-                                            来自你的圣诞老人
-                                        </p>
-                                    </div>
-
-                                    <div className="flex flex-col items-center gap-4">
-                                        <div className="w-16 h-16 rounded-full bg-slate-200 border-4 border-white shadow-inner flex items-center justify-center text-2xl">
-                                            🎅
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bold text-xl text-slate-900 text-center">
-                                                {sender.nickname}
-                                            </h3>
-                                            {sender.socialAccount && (
-                                                <p className="text-slate-500 text-xs text-center mt-1">
-                                                    {sender.socialAccount}
-                                                </p>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Message from Sender (which is their 'thanks' to me) */}
-                                    <div className="mt-6 bg-white p-4 rounded shadow-sm border border-slate-100 relative">
-                                        <Quote className="w-4 h-4 text-slate-300 absolute -top-2 -left-2 bg-white rounded-full p-0.5" />
-                                        <p className="text-sm font-serif italic text-slate-600 whitespace-pre-wrap">
-                                            {sender.noteToTarget
-                                                ? `"${sender.noteToTarget}"`
-                                                : "圣诞快乐！"}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="mt-8 text-center pb-8">
-                        <p className="text-white/30 text-[10px]">
-                            请在截止日期前寄出礼物 · 祝你玩得开心
-                        </p>
                     </div>
                 </div>
             </div>
