@@ -26,6 +26,7 @@ import {
 import { format } from "date-fns";
 // @ts-ignore
 import Link from "next/link";
+import { addKeyPrefix } from "@/lib/utils";
 
 type Participant = {
     id: string;
@@ -515,12 +516,18 @@ export default function HostDashboard() {
                                             </p>
                                             <div className="flex items-center gap-2">
                                                 <code className="text-xl font-mono text-white font-bold tracking-widest truncate block max-w-[200px]">
-                                                    {activity.id}
+                                                    {addKeyPrefix(
+                                                        activity.id,
+                                                        "invite"
+                                                    )}
                                                 </code>
                                                 <button
                                                     onClick={() => {
                                                         navigator.clipboard.writeText(
-                                                            activity.id
+                                                            addKeyPrefix(
+                                                                activity.id,
+                                                                "invite"
+                                                            )
                                                         );
                                                         alert("邀请码已复制");
                                                     }}
@@ -620,12 +627,18 @@ export default function HostDashboard() {
                                             <div className="mt-3 pt-3 border-t border-white/5 animate-in slide-in-from-top-2 fade-in duration-200">
                                                 <div className="bg-black/40 rounded p-3 flex items-center justify-between border border-amber-500/20">
                                                     <code className="text-amber-500 font-mono text-xs">
-                                                        {p.id}
+                                                        {addKeyPrefix(
+                                                            p.id,
+                                                            "participant"
+                                                        )}
                                                     </code>
                                                     <button
                                                         onClick={() => {
                                                             navigator.clipboard.writeText(
-                                                                p.id
+                                                                addKeyPrefix(
+                                                                    p.id,
+                                                                    "participant"
+                                                                )
                                                             );
                                                             alert("密钥已复制");
                                                         }}

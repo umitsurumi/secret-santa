@@ -61,7 +61,7 @@ export default function RevealEntryPage() {
                                     id="key"
                                     value={key}
                                     onChange={(e) => setKey(e.target.value)}
-                                    placeholder="例如: clq..."
+                                    placeholder="例如: par_clq..."
                                     className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-christmas-gold focus:border-transparent transition-all"
                                 />
                                 <button
