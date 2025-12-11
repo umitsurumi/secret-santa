@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Loader2 } from "lucide-react";
+import { removeKeyPrefix } from "@/lib/utils";
 
 export default function RevealEntryPage() {
     const router = useRouter();
@@ -18,7 +19,7 @@ export default function RevealEntryPage() {
         setError("");
 
         try {
-            const res = await fetch(`/api/reveal?key=${key}`);
+            const res = await fetch(`/api/reveal?key=${removeKeyPrefix(key)}`);
             const data = await res.json();
 
             if (!res.ok) {

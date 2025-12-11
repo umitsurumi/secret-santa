@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { decryptParticipantData } from "@/lib/encryption";
+import { removeKeyPrefix } from "@/lib/utils";
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
@@ -12,10 +13,10 @@ export async function GET(request: NextRequest) {
             { status: 400 }
         );
     }
-
+    const keyWithoutPrefix = removeKeyPrefix(key);
     try {
         const participant = await prisma.participant.findUnique({
-            where: { id: key },
+            where: { id: keyWithoutPrefix },
             include: {
                 activity: true,
                 target: true,
