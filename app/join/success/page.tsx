@@ -102,8 +102,8 @@ function TicketContent() {
 
                         {/* Rip Line */}
                         <div className="my-6 border-b-2 dashed border-slate-300 relative">
-                            <div className="absolute -left-[34px] -top-[10px] w-5 h-5 bg-[#0F281E] rounded-full"></div>
-                            <div className="absolute -right-[34px] -top-[10px] w-5 h-5 bg-[#0F281E] rounded-full"></div>
+                            <div className="absolute -left-[34px] -top-2.5 w-5 h-5 bg-[#0F281E] rounded-full"></div>
+                            <div className="absolute -right-[34px] -top-2.5 w-5 h-5 bg-[#0F281E] rounded-full"></div>
                         </div>
 
                         {/* Ticket Footer */}
@@ -129,7 +129,7 @@ function TicketContent() {
                     </div>
 
                     {/* Bottom Edge */}
-                    <div className="h-2 bg-gradient-to-r from-christmas-red to-[#0F281E]"></div>
+                    <div className="h-2 bg-linear-to-r from-christmas-red to-[#0F281E]"></div>
                 </div>
 
                 {/* Action Buttons */}

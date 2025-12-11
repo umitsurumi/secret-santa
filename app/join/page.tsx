@@ -87,7 +87,7 @@ export default function JoinPage() {
                                     setInviteCode(e.target.value);
                                     setError("");
                                 }}
-                                className="w-full text-center text-2xl font-mono tracking-[0.1em] uppercase bg-transparent border-b-2 border-white/20 pb-4 text-white focus:outline-none focus:border-christmas-gold placeholder-white/10 transition-colors"
+                                className="w-full text-center text-2xl font-mono tracking-widest uppercase bg-transparent border-b-2 border-white/20 pb-4 text-white focus:outline-none focus:border-christmas-gold placeholder-white/10 transition-colors"
                             />
                             {error && (
                                 <p className="text-christmas-red text-sm animate-pulse">

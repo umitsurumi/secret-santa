@@ -273,7 +273,7 @@ export default function RegistrationPage({
                 </div>
 
                 {/* Footer Action */}
-                <div className="w-full p-6 bg-gradient-to-t from-black/90 to-transparent">
+                <div className="w-full p-6 bg-linear-to-t from-black/90 to-transparent">
                     <button
                         onClick={handleSubmit}
                         disabled={isSubmitting}

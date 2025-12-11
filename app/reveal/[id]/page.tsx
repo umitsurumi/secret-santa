@@ -392,7 +392,7 @@ export default function RevealResultPage() {
             <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden">
                 {/* Background Atmosphere */}
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=2787&auto=format&fit=crop')] bg-cover bg-center opacity-30"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-[#0B0F19]/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-[#0B0F19] via-[#0B0F19]/80 to-transparent"></div>
 
                 <div className="relative z-10 w-full max-w-md flex flex-col items-center">
                     <h2 className="text-white font-serif text-3xl mb-2 text-center drop-shadow-lg">
@@ -405,7 +405,7 @@ export default function RevealResultPage() {
                     {/* Envelope Interaction */}
                     <div
                         onClick={() => setIsOpened(true)}
-                        className="relative w-full max-w-[300px] aspect-[4/3] group cursor-pointer perspective-1000"
+                        className="relative w-full max-w-[300px] aspect-4/3 group cursor-pointer perspective-1000"
                     >
                         <div className="absolute inset-0 bg-[#f4e4bc] rounded-lg shadow-2xl transform transition-transform duration-500 group-hover:scale-105 group-hover:-translate-y-2 flex items-center justify-center border border-white/20 overflow-hidden">
                             {/* Texture */}
@@ -426,7 +426,7 @@ export default function RevealResultPage() {
                             ></div>
 
                             {/* Wax Seal */}
-                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ff4d4d] to-[#8E001C] flex items-center justify-center z-20 shadow-lg group-hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-all border-4 border-[#8E001C]/20">
+                            <div className="w-16 h-16 rounded-full bg-linear-to-br from-[#ff4d4d] to-[#8E001C] flex items-center justify-center z-20 shadow-lg group-hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-all border-4 border-[#8E001C]/20">
                                 <span className="text-white/90 font-serif font-bold text-xl drop-shadow-md">
                                     S
                                 </span>
@@ -442,7 +442,7 @@ export default function RevealResultPage() {
                         <p className="text-white/30 text-xs uppercase tracking-wider">
                             活动状态: {activity.status}
                         </p>
-                        <div className="w-1 h-8 bg-gradient-to-b from-white/20 to-transparent mx-auto"></div>
+                        <div className="w-1 h-8 bg-linear-to-b from-white/20 to-transparent mx-auto"></div>
                     </div>
                 </div>
             </div>
@@ -469,7 +469,7 @@ export default function RevealResultPage() {
                     </button>
 
                     <div className="absolute -bottom-10 left-6 md:left-10 z-20">
-                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-[#D4AF37] to-yellow-600 shadow-xl flex items-center justify-center border-4 border-[#1C1C1E]">
+                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-linear-to-br from-[#D4AF37] to-yellow-600 shadow-xl flex items-center justify-center border-4 border-[#1C1C1E]">
                             <span className="text-4xl md:text-5xl select-none">
                                 🎁
                             </span>
@@ -543,7 +543,7 @@ export default function RevealResultPage() {
                                             ? target.noteToSanta
                                             : "TA 没有留下特别的愿望，自由发挥吧！"}
                                     </p>
-                                    <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-xl"></div>
+                                    <div className="absolute -top-6 -right-6 w-24 h-24 bg-linear-to-br from-white/5 to-transparent rounded-full blur-xl"></div>
                                 </div>
 
                                 {/* Private Info Card */}
@@ -595,7 +595,7 @@ export default function RevealResultPage() {
                             {/* RIGHT COLUMN: SENDER (Only if REVEALED) */}
                             {activity.status === "REVEALED" && sender && (
                                 <div className="space-y-6 lg:border-l lg:border-white/10 lg:pl-12 relative">
-                                    <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
+                                    <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-white/10 to-transparent"></div>
 
                                     <div className="flex flex-col h-full">
                                         <div className="mb-6">
