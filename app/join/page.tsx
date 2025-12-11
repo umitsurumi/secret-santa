@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Ticket, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { removeKeyPrefix } from "@/lib/utils";
 
 export default function JoinPage() {
     const router = useRouter();
@@ -21,8 +22,9 @@ export default function JoinPage() {
         setError("");
 
         try {
-            // 验证邀请码是否存在
-            const res = await fetch(`/api/activities/${inviteCode}`);
+            // 去除前缀后验证邀请码
+            const codeWithoutPrefix = removeKeyPrefix(inviteCode);
+            const res = await fetch(`/api/activities/${codeWithoutPrefix}`);
             const data = await res.json();
 
             if (!res.ok) {
@@ -37,8 +39,8 @@ export default function JoinPage() {
                 throw new Error("该活动报名已截止");
             }
 
-            // 跳转到报名表单
-            router.push(`/join/${inviteCode}`);
+            // 跳转到报名表单（传递去除前缀后的邀请码）
+            router.push(`/join/${codeWithoutPrefix}`);
         } catch (err: any) {
             setError(err.message || "验证失败，请重试");
         } finally {
@@ -79,7 +81,7 @@ export default function JoinPage() {
                         <div className="space-y-4">
                             <input
                                 type="text"
-                                placeholder="XMAS-??"
+                                placeholder="inv_... 或直接输入邀请码"
                                 value={inviteCode}
                                 onChange={(e) => {
                                     setInviteCode(e.target.value);

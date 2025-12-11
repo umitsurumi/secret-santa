@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { generateRandomString } from "@/lib/utils";
+import { generateRandomString, removeKeyPrefix } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
     try {
@@ -65,9 +65,12 @@ export async function GET(request: NextRequest) {
             );
         }
 
+        // 去除前缀后查询
+        const keyWithoutPrefix = removeKeyPrefix(adminKey);
+
         // 根据Admin Key获取活动信息
         const activity = await prisma.activity.findUnique({
-            where: { adminKey },
+            where: { adminKey: keyWithoutPrefix },
             include: {
                 participants: {
                     select: {

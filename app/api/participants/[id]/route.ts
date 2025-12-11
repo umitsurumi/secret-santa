@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { removeKeyPrefix } from "@/lib/utils";
 
 export async function DELETE(
     request: NextRequest,
@@ -24,9 +25,13 @@ export async function DELETE(
             );
         }
 
+        // 去除前缀
+        const idWithoutPrefix = removeKeyPrefix(id);
+        const adminKeyWithoutPrefix = adminKey ? removeKeyPrefix(adminKey) : "";
+
         // 1. Verify participant exists and get activity info
         const participant = await prisma.participant.findUnique({
-            where: { id },
+            where: { id: idWithoutPrefix },
             include: { activity: true },
         });
 
@@ -38,7 +43,7 @@ export async function DELETE(
         }
 
         // 2. Verify Admin Key
-        if (participant.activity.adminKey !== adminKey) {
+        if (participant.activity.adminKey !== adminKeyWithoutPrefix) {
             return NextResponse.json(
                 { error: "Unauthorized: Invalid Admin Key" },
                 { status: 403 }
@@ -61,7 +66,7 @@ export async function DELETE(
 
         // 4. Delete
         await prisma.participant.delete({
-            where: { id },
+            where: { id: idWithoutPrefix },
         });
 
         return NextResponse.json({

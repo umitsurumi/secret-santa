@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Key, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { removeKeyPrefix, addKeyPrefix } from "@/lib/utils";
 
 export default function HostEnterPage() {
     const [adminKey, setAdminKey] = useState("");
@@ -22,8 +23,12 @@ export default function HostEnterPage() {
         setError("");
 
         try {
+            // 去除前缀后发送到API
+            const keyWithoutPrefix = removeKeyPrefix(adminKey);
             const res = await fetch(
-                `/api/activities?adminKey=${encodeURIComponent(adminKey)}`
+                `/api/activities?adminKey=${encodeURIComponent(
+                    keyWithoutPrefix
+                )}`
             );
             const data = await res.json();
 
@@ -32,10 +37,10 @@ export default function HostEnterPage() {
             }
 
             const activityId = data.data.id;
-            // 重定向到管理仪表板
+            // 重定向到管理仪表板（传递去除前缀后的密钥）
             router.push(
                 `/host/${activityId}/dashboard?adminKey=${encodeURIComponent(
-                    adminKey
+                    keyWithoutPrefix
                 )}`
             );
         } catch (err: any) {

@@ -15,6 +15,7 @@ import {
     Check,
     Share2,
 } from "lucide-react";
+import { addKeyPrefix } from "@/lib/utils";
 
 export default function CreateEvent() {
     const router = useRouter();
@@ -136,12 +137,18 @@ export default function CreateEvent() {
                                     </label>
                                     <div className="flex items-center gap-2">
                                         <code className="flex-1 glass-input p-3 rounded-lg text-white font-mono text-sm truncate">
-                                            {createdActivity.activityId}
+                                            {addKeyPrefix(
+                                                createdActivity.activityId,
+                                                "invite"
+                                            )}
                                         </code>
                                         <button
                                             onClick={() =>
                                                 handleCopy(
-                                                    createdActivity.activityId,
+                                                    addKeyPrefix(
+                                                        createdActivity.activityId,
+                                                        "invite"
+                                                    ),
                                                     "邀请码"
                                                 )
                                             }
@@ -164,12 +171,18 @@ export default function CreateEvent() {
                                     </label>
                                     <div className="flex items-center gap-2">
                                         <code className="flex-1 glass-input p-3 rounded-lg text-white font-mono text-sm truncate">
-                                            {createdActivity.adminKey}
+                                            {addKeyPrefix(
+                                                createdActivity.adminKey,
+                                                "admin"
+                                            )}
                                         </code>
                                         <button
                                             onClick={() =>
                                                 handleCopy(
-                                                    createdActivity.adminKey,
+                                                    addKeyPrefix(
+                                                        createdActivity.adminKey,
+                                                        "admin"
+                                                    ),
                                                     "管理密钥"
                                                 )
                                             }

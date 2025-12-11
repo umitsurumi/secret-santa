@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Download, Copy, Check } from "lucide-react";
 import Link from "next/link";
 import { useState, Suspense } from "react";
+import { addKeyPrefix } from "@/lib/utils";
 
 function TicketContent() {
     const searchParams = useSearchParams();
@@ -14,7 +15,8 @@ function TicketContent() {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(participantKey);
+        const keyWithPrefix = addKeyPrefix(participantKey, "participant");
+        navigator.clipboard.writeText(keyWithPrefix);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -80,7 +82,10 @@ function TicketContent() {
                             </p>
                             <div className="flex justify-between items-center gap-2">
                                 <code className="text-sm font-mono font-bold text-christmas-red tracking-wider truncate flex-1 block">
-                                    {participantKey}
+                                    {addKeyPrefix(
+                                        participantKey,
+                                        "participant"
+                                    )}
                                 </code>
                                 <button
                                     onClick={handleCopy}

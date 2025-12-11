@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { removeKeyPrefix } from "@/lib/utils";
 
 export async function GET(
     request: NextRequest,
@@ -12,8 +13,11 @@ export async function GET(
             return NextResponse.json({ error: "缺少活动ID" }, { status: 400 });
         }
 
+        // 去除前缀后查询
+        const idWithoutPrefix = removeKeyPrefix(id);
+
         const activity = await prisma.activity.findUnique({
-            where: { id },
+            where: { id: idWithoutPrefix },
             select: {
                 id: true,
                 name: true,
@@ -63,9 +67,13 @@ export async function PATCH(
             );
         }
 
+        // 去除前缀
+        const idWithoutPrefix = removeKeyPrefix(id);
+        const adminKeyWithoutPrefix = removeKeyPrefix(adminKey);
+
         // 1. Verify Activity & Admin Key
         const activity = await prisma.activity.findUnique({
-            where: { id },
+            where: { id: idWithoutPrefix },
         });
 
         if (!activity) {
@@ -75,7 +83,7 @@ export async function PATCH(
             );
         }
 
-        if (activity.adminKey !== adminKey) {
+        if (activity.adminKey !== adminKeyWithoutPrefix) {
             return NextResponse.json(
                 { error: "Unauthorized: Invalid Admin Key" },
                 { status: 403 }
