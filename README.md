@@ -165,6 +165,3 @@ npm run dev
 ## 📄 许可证 (License)
 
 [MIT](https://www.google.com/search?q=LICENSE) © 2025 Secret Santa Project
-```
-
-```
